@@ -1,0 +1,4 @@
+repository "AppImpollinatori/AppImpollinatori@6872793587998@cloud"
+  path "/"
+    br "/main"
+    co "/main"
