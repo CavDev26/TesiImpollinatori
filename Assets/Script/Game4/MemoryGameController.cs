@@ -9,6 +9,9 @@ public class MemoryGameController : MonoBehaviour
     public GameObject winPanel;   // Schermata di vittoria
     public GameObject losePanel;  // Schermata di sconfitta
 
+    [Header("Griglia Carte")]
+    public GameObject cardGrid;
+
     [Header("Testi UI")]
     public TextMeshProUGUI timeText;  // Testo per il tempo rimanente
     public TextMeshProUGUI movesText; // Testo per le mosse fatte
@@ -33,6 +36,8 @@ public class MemoryGameController : MonoBehaviour
         rulesPanel.SetActive(true);
         winPanel.SetActive(false);
         losePanel.SetActive(false);
+        // NASCONDE LE CARTE ALL'AVVIO
+        if (cardGrid != null) cardGrid.SetActive(false);
         isGameOver = true;
         canPlay = false;
         
@@ -43,6 +48,8 @@ public class MemoryGameController : MonoBehaviour
     public void StartGame()
     {
         rulesPanel.SetActive(false); // Nascondi le regole
+        // MOSTRA LE CARTE QUANDO SI PREME INIZIA
+        if (cardGrid != null) cardGrid.SetActive(true);
         isGameOver = false;
         canPlay = true; // Permetti i click
     }
