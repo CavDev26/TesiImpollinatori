@@ -1,67 +1,85 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // Serve per usare i testi moderni della UI
+using UnityEngine.UI;
+using TMPro;
 
 public class MemoryGameController : MonoBehaviour
 {
     [Header("Pannelli UI")]
-    public GameObject rulesPanel; // Schermata iniziale con le regole
-    public GameObject winPanel;   // Schermata di vittoria
-    public GameObject losePanel;  // Schermata di sconfitta
+    public GameObject rulesPanel;
+    public GameObject winPanel;
+    public GameObject losePanel;
+    public GameObject datiPanel;
 
     [Header("Griglia Carte")]
     public GameObject cardGrid;
 
+    [Header("Impostazioni Griglia (Righe e Colonne)")]
+    public int columns = 3;
+    public int rows = 4;
+
     [Header("Testi UI")]
-    public TextMeshProUGUI timeText;  // Testo per il tempo rimanente
-    public TextMeshProUGUI movesText; // Testo per le mosse fatte
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI movesText;
 
     [Header("Impostazioni Gioco")]
-    public float timeLeft = 60f; // 60 secondi a disposizione
-    public int totalPairs = 6;   // Quante coppie ci sono nel gioco? (es. 6 coppie = 12 carte)
+    public float initialTime = 60f;
+    public int totalPairs = 6;
 
-    // Variabili di stato interne (nascoste dall'Inspector)
-    [HideInInspector] public bool canPlay = false; // Controlla se l'utente può cliccare
+    [HideInInspector] public bool canPlay = false;
     private bool isGameOver = true;
     private int moves = 0;
     private int pairsFound = 0;
+    private float timeLeft;
 
-    // Memoria per le due carte girate
     private MemoryCard firstCard;
     private MemoryCard secondCard;
 
     private void Start()
     {
-        // All'inizio, attiviamo le regole e blocchiamo il gioco
         rulesPanel.SetActive(true);
         winPanel.SetActive(false);
         losePanel.SetActive(false);
-        // NASCONDE LE CARTE ALL'AVVIO
+        datiPanel.SetActive(false);
+
         if (cardGrid != null) cardGrid.SetActive(false);
         isGameOver = true;
         canPlay = false;
-        
+
         UpdateUI();
     }
 
-    // Questa funzione va messa sul bottone "Inizia" del pannello delle regole
     public void StartGame()
     {
-        rulesPanel.SetActive(false); // Nascondi le regole
-        // MOSTRA LE CARTE QUANDO SI PREME INIZIA
-        if (cardGrid != null) cardGrid.SetActive(true);
+        timeLeft = initialTime;
+        moves = 0;
+        pairsFound = 0;
+        firstCard = null;
+        secondCard = null;
+        UpdateUI();
+
+        rulesPanel.SetActive(false);
+        datiPanel.SetActive(true);
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+
+        if (cardGrid != null)
+        {
+            cardGrid.SetActive(true);
+            ShuffleCards();
+            ResetAllCards();
+        }
+
         isGameOver = false;
-        canPlay = true; // Permetti i click
+        canPlay = true;
     }
 
     private void Update()
     {
-        // Se il gioco è in corso, fai scendere il timer
         if (!isGameOver && canPlay)
         {
-            timeLeft -= Time.deltaTime; // Sottrae i secondi
-            
-            // Aggiorna il testo arrotondando il numero
+            timeLeft -= Time.deltaTime;
             timeText.text = "Tempo: " + Mathf.Ceil(timeLeft).ToString() + "s";
 
             if (timeLeft <= 0)
@@ -71,47 +89,82 @@ public class MemoryGameController : MonoBehaviour
         }
     }
 
-    // Viene chiamata dalla singola carta quando viene cliccata
+    private void ShuffleCards()
+    {
+        List<Transform> cards = new List<Transform>();
+
+        foreach (Transform child in cardGrid.transform)
+        {
+            cards.Add(child);
+        }
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            int randomIndex = Random.Range(i, cards.Count);
+            Transform temp = cards[i];
+            cards[i] = cards[randomIndex];
+            cards[randomIndex] = temp;
+        }
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            cards[i].SetSiblingIndex(i);
+        }
+    }
+
+    private void ResetAllCards()
+    {
+        MemoryCard[] cards = cardGrid.GetComponentsInChildren<MemoryCard>();
+        foreach (MemoryCard card in cards)
+        {
+            card.ResetCardState();
+        }
+    }
+
     public void CardRevealed(MemoryCard card)
     {
         if (firstCard == null)
         {
-            firstCard = card; // Salviamo la prima carta
+            firstCard = card;
         }
         else
         {
-            secondCard = card; // Salviamo la seconda carta
-            moves++; // Aggiungiamo una mossa
+            secondCard = card;
+            moves++;
             UpdateUI();
-            
-            // Blocchiamo i click e controlliamo se c'è un match
-            StartCoroutine(CheckMatch()); 
+
+            StartCoroutine(CheckMatch());
         }
     }
 
-    // Coroutine per aspettare un secondo prima di rigirare le carte
     IEnumerator CheckMatch()
     {
-        canPlay = false; // Blocca i click temporaneamente
+        canPlay = false; // Blocca ulteriori click durante la verifica
+
+        // Tempo d'attesa per consentire il completamento dell'animazione di apertura della seconda carta
+        yield return new WaitForSeconds(0.4f);
 
         if (firstCard.cardID == secondCard.cardID)
         {
-            // COPPIA TROVATA!
+            // COPPIA CORRETTA: rimangono a faccia in su e non sono pi� cliccabili
+            firstCard.SetMatched();
+            secondCard.SetMatched();
+
             pairsFound++;
             if (pairsFound >= totalPairs)
             {
+                yield return new WaitForSeconds(0.8f);
                 WinGame();
             }
         }
         else
         {
-            // COPPIA SBAGLIATA! Aspetta 1 secondo e coprile di nuovo
-            yield return new WaitForSeconds(1f);
+            // COPPIA ERRATA: attesa visiva e rigiro
+            yield return new WaitForSeconds(0.8f);
             firstCard.HideCard();
             secondCard.HideCard();
         }
 
-        // Resetta la memoria e sblocca i click
         firstCard = null;
         secondCard = null;
         if (!isGameOver) canPlay = true;
@@ -120,21 +173,24 @@ public class MemoryGameController : MonoBehaviour
     private void UpdateUI()
     {
         movesText.text = "Mosse: " + moves.ToString();
+        timeText.text = "Tempo: " + Mathf.Ceil(timeLeft).ToString() + "s";
     }
 
     private void WinGame()
     {
         isGameOver = true;
         canPlay = false;
+        cardGrid.SetActive(false);
+        datiPanel.SetActive(false);
         winPanel.SetActive(true);
-        
-        // QUI IN FUTURO AGGIUNGEREMO IL SALVATAGGIO DEI PLAYERPREFS
     }
 
     private void LoseGame()
     {
         isGameOver = true;
         canPlay = false;
+        cardGrid.SetActive(false);
+        datiPanel.SetActive(false);
         losePanel.SetActive(true);
     }
 }
