@@ -11,6 +11,7 @@ public class MemoryGameController : MonoBehaviour
     public GameObject winPanel;
     public GameObject losePanel;
     public GameObject datiPanel;
+    public GameObject buttonsPanel;
 
     [Header("Griglia Carte")]
     public GameObject cardGrid;
@@ -22,6 +23,8 @@ public class MemoryGameController : MonoBehaviour
     [Header("Testi UI")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI movesText;
+    public TextMeshProUGUI timeWon;
+    public TextMeshProUGUI movesWon;
 
     [Header("Impostazioni Gioco")]
     public float initialTime = 60f;
@@ -42,6 +45,7 @@ public class MemoryGameController : MonoBehaviour
         winPanel.SetActive(false);
         losePanel.SetActive(false);
         datiPanel.SetActive(false);
+        buttonsPanel.SetActive(false);
 
         if (cardGrid != null) cardGrid.SetActive(false);
         isGameOver = true;
@@ -173,7 +177,7 @@ public class MemoryGameController : MonoBehaviour
     private void UpdateUI()
     {
         movesText.text = "Mosse: " + moves.ToString();
-        timeText.text = "Tempo: " + Mathf.Ceil(timeLeft).ToString() + "s";
+        timeText.text = "Tempo: " + Mathf.Ceil(timeLeft).ToString() + " s";
     }
 
     private void WinGame()
@@ -182,7 +186,11 @@ public class MemoryGameController : MonoBehaviour
         canPlay = false;
         cardGrid.SetActive(false);
         datiPanel.SetActive(false);
+        // Update the win panel with the final stats
+        timeWon.text = Mathf.Ceil(initialTime - timeLeft).ToString() + " s";
+        movesWon.text = moves.ToString();
         winPanel.SetActive(true);
+        buttonsPanel.SetActive(true);
     }
 
     private void LoseGame()
@@ -192,5 +200,6 @@ public class MemoryGameController : MonoBehaviour
         cardGrid.SetActive(false);
         datiPanel.SetActive(false);
         losePanel.SetActive(true);
+        buttonsPanel.SetActive(true);
     }
 }
