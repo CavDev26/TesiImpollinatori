@@ -70,7 +70,20 @@ public class HexGridGenerator : MonoBehaviour
         zolleContainer.localScale = new Vector3(1f, scalaVerticale, 1f);
 
         float width = hexSize * 2f;
-        float height = Mathf.Sqrt(3f) * hexSize;
+        float height;
+
+        // Se il prefab ha un'immagine (artwork disegnato a mano), l'altezza segue le sue proporzioni
+        // reali invece della formula dell'esagono piatto, cosi' l'immagine non viene deformata.
+        if (esagonoPrefab.TryGetComponent(out Image immaginePrefab) && immaginePrefab.sprite != null)
+        {
+            Rect spriteRect = immaginePrefab.sprite.rect;
+            height = width * (spriteRect.height / spriteRect.width);
+        }
+        else
+        {
+            height = Mathf.Sqrt(3f) * hexSize;
+        }
+
         float profonditaPixel = height * profondita3D;
 
         float passoVerticale = height * spaziatura;
