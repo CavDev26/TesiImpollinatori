@@ -376,7 +376,7 @@ MonoBehaviour:
   btnHome: {fileID: 1883854155103697082}
   btnGarden: {fileID: 1299486704322928958}
   btnMinigames: {fileID: 6826289244859329398}
-  homeSceneName: MainScreen
+  homeSceneName: HomePage
   gardenSceneName: NewGlossario
   minigamesSceneName: MainScreen
 --- !u!1 &5224594612351857186
