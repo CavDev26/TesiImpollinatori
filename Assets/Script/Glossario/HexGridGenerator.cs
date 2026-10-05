@@ -7,6 +7,8 @@ public class HexGridGenerator : MonoBehaviour
     [Header("Riferimenti")]
     public RectTransform zolleContainer;
     public GameObject esagonoPrefab;
+    public ZollaCarousel carosello;
+    public DetailsPanelController dettagli;
 
     [Header("Forma della griglia (a margherita)")]
     [Tooltip("0 = solo il centro, 1 = centro + 6 attorno (margherita da 7), 2 = un altro anello di 12 (19 totali), ...")]
@@ -69,6 +71,11 @@ public class HexGridGenerator : MonoBehaviour
 
         zolleContainer.localScale = new Vector3(1f, scalaVerticale, 1f);
 
+        if (carosello != null)
+        {
+            carosello.ResettaPiazzamenti();
+        }
+
         float width = hexSize * 2f;
         float height;
 
@@ -114,20 +121,12 @@ public class HexGridGenerator : MonoBehaviour
                     grafica.SetVerticesDirty();
                 }
 
-                int indiceCatturato = indice;
-                if (istanza.TryGetComponent(out Button bottone))
-                {
-                    bottone.onClick.AddListener(() => OnEsagonoCliccato(indiceCatturato));
-                }
+                ZollaSlot slot = istanza.AddComponent<ZollaSlot>();
+                slot.Init(carosello, dettagli);
 
                 indice++;
             }
         }
     }
 
-    private void OnEsagonoCliccato(int indice)
-    {
-        // Punto di estensione: in futuro apre il menu di selezione zollette per riempire questa casella
-        Debug.Log($"Casella {indice} selezionata");
-    }
 }

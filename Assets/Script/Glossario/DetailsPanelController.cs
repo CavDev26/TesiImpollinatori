@@ -16,6 +16,9 @@ public class DetailsPanelController : MonoBehaviour
     public Button prevButton;
     public Button moreCloseButton;
 
+    [Header("Zolletta")]
+    public Button rimuoviButton;
+
     [Header("Animazione apertura/chiusura")]
     public float durata = 0.22f;
     [Range(0.5f, 1f)] public float scalaIniziale = 0.9f;
@@ -36,8 +39,19 @@ public class DetailsPanelController : MonoBehaviour
     private Coroutine animazioneInCorso;
     private Coroutine slideInCorso;
 
+    private ZollaSlot slotAperto;
+
     void Start()
     {
+        if (rimuoviButton == null && detailsPanel != null)
+        {
+            rimuoviButton = CreaRimuoviButton(detailsPanel.GetComponent<RectTransform>());
+        }
+        if (rimuoviButton != null)
+        {
+            rimuoviButton.onClick.AddListener(RimuoviZolla);
+        }
+
         if (closeButton != null)
         {
             closeButton.onClick.AddListener(ChiudiDettagli);
@@ -78,8 +92,70 @@ public class DetailsPanelController : MonoBehaviour
         ChiudiImmediato();
     }
 
+    private static Button CreaRimuoviButton(RectTransform genitore)
+    {
+        GameObject go = new GameObject("RimuoviButton", typeof(RectTransform), typeof(Image), typeof(Button));
+        go.transform.SetParent(genitore, false);
+
+        RectTransform rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0f);
+        rt.anchorMax = new Vector2(0.5f, 0f);
+        rt.pivot = new Vector2(0.5f, 0f);
+        rt.sizeDelta = new Vector2(300f, 90f);
+        rt.anchoredPosition = new Vector2(0f, 60f);
+
+        Image sfondo = go.GetComponent<Image>();
+        sfondo.color = new Color(0.75f, 0.3f, 0.25f);
+
+        GameObject testoGo = new GameObject("Testo", typeof(RectTransform), typeof(Text));
+        testoGo.transform.SetParent(go.transform, false);
+        RectTransform trt = testoGo.GetComponent<RectTransform>();
+        trt.anchorMin = Vector2.zero;
+        trt.anchorMax = Vector2.one;
+        trt.offsetMin = Vector2.zero;
+        trt.offsetMax = Vector2.zero;
+
+        Text t = testoGo.GetComponent<Text>();
+        t.text = "Rimuovi";
+        t.alignment = TextAnchor.MiddleCenter;
+        t.fontSize = 48;
+        t.color = Color.white;
+        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (font == null)
+        {
+            font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        }
+        t.font = font;
+
+        Button bottone = go.GetComponent<Button>();
+        bottone.targetGraphic = sfondo;
+        return bottone;
+    }
+
     public void ApriDettagli()
     {
+        Apri(null);
+    }
+
+    public void ApriDettagliPerSlot(ZollaSlot slot)
+    {
+        Apri(slot);
+    }
+
+    public void RimuoviZolla()
+    {
+        if (slotAperto != null)
+        {
+            slotAperto.Rimuovi();
+            slotAperto = null;
+        }
+        ChiudiDettagli();
+    }
+
+    private void Apri(ZollaSlot slot)
+    {
+        slotAperto = slot;
+
         if (animazioneInCorso != null)
         {
             StopCoroutine(animazioneInCorso);
