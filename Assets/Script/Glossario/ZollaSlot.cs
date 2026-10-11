@@ -6,30 +6,54 @@ public class ZollaSlot : MonoBehaviour, IPointerClickHandler
 {
     private ZollaCarousel carosello;
     private DetailsPanelController dettagli;
-    private Image immagine;
-    private Sprite spriteVuoto;
+    private Image immagineVuota;
+    private Color coloreVuotoOriginale;
+    private Image immaginePiazzata;
+    private RectTransform rettangoloProprio;
     private int indiceZolla = -1;
+    private ZollettaData dato;
 
     public bool Occupata => indiceZolla >= 0;
+    public ZollettaData Dato => dato;
 
     public void Init(ZollaCarousel c, DetailsPanelController d)
     {
         carosello = c;
         dettagli = d;
-        immagine = GetComponent<Image>();
-        if (immagine != null)
+        immagineVuota = GetComponent<Image>();
+        rettangoloProprio = GetComponent<RectTransform>();
+        if (immagineVuota != null)
         {
-            spriteVuoto = immagine.sprite;
-            immagine.preserveAspect = true;
+            coloreVuotoOriginale = immagineVuota.color;
         }
     }
 
-    public void Riempi(int indice, Sprite sprite)
+    public void Riempi(int indice, ZollettaData datoZolletta)
     {
         indiceZolla = indice;
-        if (immagine != null)
+        dato = datoZolletta;
+
+        // L'immagine vuota resta attiva e cliccabile (occupa sempre esattamente la cella): la si
+        // rende solo invisibile, cosi' l'area cliccabile dell'esagono non cambia mai, anche se
+        // l'immagine della zolletta piazzata sopra sconfina un po' per sembrare tutte della stessa
+        // dimensione.
+        if (immagineVuota != null)
         {
-            immagine.sprite = sprite;
+            Color c = coloreVuotoOriginale;
+            c.a = 0f;
+            immagineVuota.color = c;
+        }
+
+        Sprite sprite = datoZolletta != null ? datoZolletta.immagine : null;
+        CreaImmaginePiazzataSeServe();
+
+        immaginePiazzata.sprite = sprite;
+        immaginePiazzata.gameObject.SetActive(true);
+
+        if (rettangoloProprio != null)
+        {
+            Vector2 dimensione = AdattatoreSprite.DimensioneResa(sprite, rettangoloProprio.rect.width, rettangoloProprio.rect.height);
+            immaginePiazzata.rectTransform.sizeDelta = dimensione;
         }
     }
 
@@ -37,10 +61,17 @@ public class ZollaSlot : MonoBehaviour, IPointerClickHandler
     {
         int vecchia = indiceZolla;
         indiceZolla = -1;
-        if (immagine != null)
+        dato = null;
+
+        if (immaginePiazzata != null)
         {
-            immagine.sprite = spriteVuoto;
+            immaginePiazzata.gameObject.SetActive(false);
         }
+        if (immagineVuota != null)
+        {
+            immagineVuota.color = coloreVuotoOriginale;
+        }
+
         return vecchia;
     }
 
@@ -71,5 +102,27 @@ public class ZollaSlot : MonoBehaviour, IPointerClickHandler
         {
             carosello.PiazzaInSlot(this, carosello.ZollaSelezionata);
         }
+    }
+
+    private void CreaImmaginePiazzataSeServe()
+    {
+        if (immaginePiazzata != null)
+        {
+            return;
+        }
+
+        GameObject go = new GameObject("ArtworkPiazzata", typeof(RectTransform), typeof(Image));
+        go.transform.SetParent(transform, false);
+
+        RectTransform rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+
+        immaginePiazzata = go.GetComponent<Image>();
+        immaginePiazzata.preserveAspect = true;
+        // Solo visiva: anche se sconfina dalla cella, non deve rubare i click a cio' che sta intorno.
+        immaginePiazzata.raycastTarget = false;
     }
 }

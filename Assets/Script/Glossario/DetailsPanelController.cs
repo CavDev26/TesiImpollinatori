@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ public class DetailsPanelController : MonoBehaviour
 
     [Header("Zolletta")]
     public Button rimuoviButton;
+    public TMP_Text nomeTesto;
+    public Image artImmagine;
 
     [Header("Animazione apertura/chiusura")]
     public float durata = 0.22f;
@@ -132,6 +135,19 @@ public class DetailsPanelController : MonoBehaviour
         return bottone;
     }
 
+    private void MostraDatiZolletta(ZollettaData dato)
+    {
+        if (nomeTesto != null)
+        {
+            nomeTesto.text = dato != null ? dato.nome : string.Empty;
+        }
+        if (artImmagine != null)
+        {
+            artImmagine.sprite = dato != null ? dato.immagine : null;
+            artImmagine.preserveAspect = true;
+        }
+    }
+
     public void ApriDettagli()
     {
         Apri(null);
@@ -155,6 +171,7 @@ public class DetailsPanelController : MonoBehaviour
     private void Apri(ZollaSlot slot)
     {
         slotAperto = slot;
+        MostraDatiZolletta(slot != null ? slot.Dato : null);
 
         if (animazioneInCorso != null)
         {

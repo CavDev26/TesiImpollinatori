@@ -10,11 +10,9 @@ public class ZollaCarousel : MonoBehaviour
     public GameObject pannello;
     public Button pulsantePiu;
 
-    [Header("Zollette disponibili (placeholder)")]
-    [Tooltip("Immagine usata per tutte le zollette finche' non ci sono gli artwork veri. Se 'Zolle Sprites' e' vuoto, viene ripetuta 'Numero Default' volte.")]
-    public Sprite spriteDefault;
-    [Min(1)] public int numeroDefault = 8;
-    public Sprite[] zolleSprites;
+    [Header("Zollette disponibili")]
+    [Tooltip("Una scheda (ScriptableObject) per ogni zolletta: Assets -> Create -> Giardino -> Zolletta.")]
+    public ZollettaData[] zollette;
 
     [Header("Carosello")]
     [Min(1)] public int zollePerPagina = 3;
@@ -23,7 +21,6 @@ public class ZollaCarousel : MonoBehaviour
     private RectTransform viewport;
     private RectTransform contenuto;
     private readonly List<ZollaItem> items = new List<ZollaItem>();
-    private Sprite[] sprites;
     private bool[] piazzate;
     private int selezionata = -1;
     private float posizione;
@@ -63,6 +60,9 @@ public class ZollaCarousel : MonoBehaviour
             pulsantePiu.onClick.AddListener(Alterna);
         }
 
+        // Le zollette si costruiscono subito, all'avvio della scena, invece che al primo click sul "+".
+        Costruisci();
+
         pannello.SetActive(false);
     }
 
@@ -87,11 +87,8 @@ public class ZollaCarousel : MonoBehaviour
             return;
         }
 
+        pannello.transform.localScale = Vector3.one;
         pannello.SetActive(true);
-        if (!costruito)
-        {
-            Costruisci();
-        }
     }
 
     public void Chiudi()
@@ -102,8 +99,8 @@ public class ZollaCarousel : MonoBehaviour
         }
 
         selezionata = -1;
-        pannello.SetActive(false);
         AggiornaItems();
+        pannello.SetActive(false);
     }
 
     public void Seleziona(int indice)
@@ -133,7 +130,7 @@ public class ZollaCarousel : MonoBehaviour
             }
         }
 
-        slot.Riempi(indice, sprites[indice]);
+        slot.Riempi(indice, zollette[indice]);
         piazzate[indice] = true;
 
         if (selezionata == indice)
@@ -170,21 +167,6 @@ public class ZollaCarousel : MonoBehaviour
         AggiornaItems();
     }
 
-    private Sprite[] ZolleDaMostrare()
-    {
-        if (zolleSprites != null && zolleSprites.Length > 0)
-        {
-            return zolleSprites;
-        }
-
-        Sprite[] lista = new Sprite[numeroDefault];
-        for (int i = 0; i < lista.Length; i++)
-        {
-            lista[i] = spriteDefault;
-        }
-        return lista;
-    }
-
     private void Costruisci()
     {
         costruito = true;
@@ -193,18 +175,24 @@ public class ZollaCarousel : MonoBehaviour
             Debug.LogWarning("ZollaCarousel: nel prefab manca Viewport/Contenuto.");
             return;
         }
+        if (zollette == null || zollette.Length == 0)
+        {
+            Debug.LogWarning("ZollaCarousel: assegna almeno una scheda in 'Zollette'.");
+            return;
+        }
 
         Canvas.ForceUpdateCanvases();
 
-        sprites = ZolleDaMostrare();
-        piazzate = new bool[sprites.Length];
+        piazzate = new bool[zollette.Length];
 
         float larghezzaItem = viewport.rect.width / zollePerPagina;
         float altezza = viewport.rect.height;
 
-        for (int i = 0; i < sprites.Length; i++)
+        for (int i = 0; i < zollette.Length; i++)
         {
-            GameObject go = new GameObject("Zolla_" + i, typeof(RectTransform), typeof(Image));
+            ZollettaData dato = zollette[i];
+
+            GameObject go = new GameObject("Zolla_" + i, typeof(RectTransform));
             go.transform.SetParent(contenuto, false);
 
             RectTransform rt = go.GetComponent<RectTransform>();
@@ -213,12 +201,8 @@ public class ZollaCarousel : MonoBehaviour
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.sizeDelta = new Vector2(larghezzaItem * 0.9f, altezza * 0.9f);
 
-            Image immagine = go.GetComponent<Image>();
-            immagine.sprite = sprites[i];
-            immagine.preserveAspect = true;
-
             ZollaItem item = go.AddComponent<ZollaItem>();
-            item.Init(this, i);
+            item.Init(this, i, dato != null ? dato.immagine : null, dato != null ? dato.nome : "???");
             items.Add(item);
         }
 
