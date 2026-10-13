@@ -22,6 +22,13 @@ public class DetailsPanelController : MonoBehaviour
     public TMP_Text nomeTesto;
     public Image artImmagine;
 
+    [Header("Piante e impollinatori (pannello More)")]
+    [Tooltip("Uno slot icona per ogni impollinatore/pianta, nello stesso ordine degli array in ZollettaData.")]
+    public Image[] iconeImpollinatori;
+    public TMP_Text[] nomiImpollinatori;
+    public Image[] iconePiante;
+    public TMP_Text[] nomiPiante;
+
     [Header("Animazione apertura/chiusura")]
     public float durata = 0.22f;
     [Range(0.5f, 1f)] public float scalaIniziale = 0.9f;
@@ -145,6 +152,34 @@ public class DetailsPanelController : MonoBehaviour
         {
             artImmagine.sprite = dato != null ? dato.immagine : null;
             artImmagine.preserveAspect = true;
+        }
+
+        PopolaGruppo(iconeImpollinatori, nomiImpollinatori, dato != null ? dato.impollinatori : null);
+        PopolaGruppo(iconePiante, nomiPiante, dato != null ? dato.piante : null);
+    }
+
+    // Riempie gli slot fissi (icona + nome) del pannello More con le prime N voci dell'array della
+    // zolletta corrente; gli slot in eccesso (nessuna voce corrispondente) si nascondono.
+    private static void PopolaGruppo(Image[] icone, TMP_Text[] nomi, VoceGlossario[] voci)
+    {
+        if (icone == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < icone.Length; i++)
+        {
+            VoceGlossario voce = voci != null && i < voci.Length ? voci[i] : null;
+
+            if (icone[i] != null)
+            {
+                icone[i].sprite = voce != null ? voce.icona : null;
+                icone[i].enabled = voce != null && voce.icona != null;
+            }
+            if (nomi != null && i < nomi.Length && nomi[i] != null)
+            {
+                nomi[i].text = voce != null ? voce.nome : string.Empty;
+            }
         }
     }
 

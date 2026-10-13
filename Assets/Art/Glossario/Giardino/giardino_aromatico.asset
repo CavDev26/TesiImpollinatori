@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Giardino aromatico
   immagine: {fileID: 21300000, guid: 5aa320e2496f787418385ae95e777509, type: 3}
+  piante:
+  - {fileID: 11400000, guid: eb3225bbc8c261148a8eee655d2cef29, type: 2}
+  - {fileID: 11400000, guid: 1f9f2ee8b6b6816419fa50800c113433, type: 2}
+  - {fileID: 11400000, guid: 5054686621d0a2749b6fcc80c8fd696f, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 39bf8346511f74147acab55bcb1e005a, type: 2}
+  - {fileID: 11400000, guid: 86a2558922743c54bb3f4900c61f09ef, type: 2}
+  - {fileID: 11400000, guid: 14c8c26917c221849a251a9cfe56a11a, type: 2}

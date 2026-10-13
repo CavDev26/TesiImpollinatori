@@ -21,7 +21,7 @@ namespace TMPro.Examples
         }
 
 
-        void Start()
+        void OnEnable()
         {
             StartCoroutine(WarpText());
         }

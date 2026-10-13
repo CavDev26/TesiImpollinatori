@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Radura primaverile
   immagine: {fileID: 21300000, guid: 51ece1cd48ce28c41a7d113159d6e288, type: 3}
+  piante:
+  - {fileID: 11400000, guid: ae6c407abd459624c98c8b492c7ec5fc, type: 2}
+  - {fileID: 11400000, guid: b35229b5f1ec6724a885f35fd622971e, type: 2}
+  - {fileID: 11400000, guid: d95db8f5c0ebf9b44b9096f5ac8f9476, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 5035c75a06d5ac04d9c5f17032b7f43c, type: 2}
+  - {fileID: 11400000, guid: cca94e86edf90b24f9dd5927fb8a7278, type: 2}
+  - {fileID: 11400000, guid: 6bebcf28356ff9c42a9b14f5adc30fec, type: 2}

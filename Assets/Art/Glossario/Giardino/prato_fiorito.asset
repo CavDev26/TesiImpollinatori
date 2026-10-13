@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Prato fiorito
   immagine: {fileID: 21300000, guid: 87ca4a0963b51d045b1ed9e8acbc8b03, type: 3}
+  piante:
+  - {fileID: 11400000, guid: b8cf8f968e23065438cab7ecb11c85b4, type: 2}
+  - {fileID: 11400000, guid: c1f472f5b52c03e43af70b57bb6fcb24, type: 2}
+  - {fileID: 11400000, guid: 7a1e93cc5fb5b894e91505671cb0dfd2, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 799b78c46c122bc47809539f827a091e, type: 2}
+  - {fileID: 11400000, guid: c8aeee3f6a9c8dc479562b8387cc3e56, type: 2}
+  - {fileID: 11400000, guid: 9b24506db1bcfa046a7be862f81ae240, type: 2}

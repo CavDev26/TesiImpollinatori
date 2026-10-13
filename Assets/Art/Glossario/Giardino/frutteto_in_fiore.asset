@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Frutteto in fiore
   immagine: {fileID: 21300000, guid: 619b04df2c045434f9cdcc98d80fc230, type: 3}
+  piante:
+  - {fileID: 11400000, guid: 96f11a390696ee44f9f6f8a942aee9a9, type: 2}
+  - {fileID: 11400000, guid: 93e91436c6489c14bbc711e15c70ce8f, type: 2}
+  - {fileID: 11400000, guid: 194b02044f7c7024bab8cfeb042a842d, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 7735f6c307a077744b404446d95a7ec0, type: 2}
+  - {fileID: 11400000, guid: b000524f38ed01c4899614b4f886b871, type: 2}
+  - {fileID: 11400000, guid: 589b34b1ff1dfae428ca93baeb715633, type: 2}
