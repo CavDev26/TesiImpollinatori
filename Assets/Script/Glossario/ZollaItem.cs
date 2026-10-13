@@ -8,9 +8,9 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
     private ZollaCarousel carosello;
     private Image immagine;
     private RectTransform immagineRect;
-    private Text nomeTesto;
     private GameObject fantasma;
     private bool piazzata;
+    private bool bloccata;
 
     public int Indice { get; private set; }
 
@@ -19,15 +19,32 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
     // invece che attaccata al bordo superiore.
     private const float AreaArtworkMinY = 0.16f;
     private const float AreaArtworkMaxY = 0.92f;
+    private const float ScalaArtwork = 1.25f;
 
-    public void Init(ZollaCarousel c, int indice, Sprite sprite, string nome)
+    private float scalaPosizione = 1f;
+    private bool selezionata;
+
+    // Materiale condiviso che desatura l'immagine (vedi Assets/Shaders/UIGrayscale.shader): usato
+    // per le zollette non ancora sbloccate, cosi' sono davvero in bianco e nero e non solo piu' scure.
+    private static Material materialeGrigio;
+
+    private static Material OttieniMaterialeGrigio()
+    {
+        if (materialeGrigio == null)
+        {
+            Shader shader = Shader.Find("UI/Grayscale");
+            if (shader != null)
+            {
+                materialeGrigio = new Material(shader);
+            }
+        }
+        return materialeGrigio;
+    }
+
+    public void Init(ZollaCarousel c, int indice, Sprite sprite)
     {
         carosello = c;
         Indice = indice;
-
-        RectTransform contenitoreRect = (RectTransform)transform;
-        float larghezzaArea = contenitoreRect.rect.width;
-        float altezzaArea = contenitoreRect.rect.height * (AreaArtworkMaxY - AreaArtworkMinY);
 
         // Zona cliccabile dedicata, sempre grande esattamente quanto la cella: l'immagine sopra puo'
         // sconfinare un po' per sembrare tutte della stessa dimensione, senza rubare i click a quello
@@ -45,55 +62,59 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
         GameObject artworkGo = new GameObject("Artwork", typeof(RectTransform), typeof(Image));
         artworkGo.transform.SetParent(transform, false);
         immagineRect = artworkGo.GetComponent<RectTransform>();
-        immagineRect.anchorMin = new Vector2(0.5f, (AreaArtworkMinY + AreaArtworkMaxY) / 2f);
-        immagineRect.anchorMax = immagineRect.anchorMin;
-        immagineRect.pivot = new Vector2(0.5f, 0.5f);
-        immagineRect.sizeDelta = AdattatoreSprite.DimensioneResa(sprite, larghezzaArea, altezzaArea);
+        immagineRect.anchorMin = new Vector2(0f, AreaArtworkMinY);
+        immagineRect.anchorMax = new Vector2(1f, AreaArtworkMaxY);
+        immagineRect.offsetMin = Vector2.zero;
+        immagineRect.offsetMax = Vector2.zero;
 
         immagine = artworkGo.GetComponent<Image>();
         immagine.sprite = sprite;
         immagine.preserveAspect = true;
         immagine.raycastTarget = false;
-
-        GameObject nomeGo = new GameObject("Nome", typeof(RectTransform), typeof(Text));
-        nomeGo.transform.SetParent(transform, false);
-        RectTransform nomeRect = nomeGo.GetComponent<RectTransform>();
-        nomeRect.anchorMin = new Vector2(0f, 0f);
-        nomeRect.anchorMax = new Vector2(1f, 0.22f);
-        nomeRect.offsetMin = Vector2.zero;
-        nomeRect.offsetMax = Vector2.zero;
-
-        nomeTesto = nomeGo.GetComponent<Text>();
-        nomeTesto.text = nome;
-        nomeTesto.alignment = TextAnchor.MiddleCenter;
-        nomeTesto.fontSize = 22;
-        nomeTesto.color = new Color(0.3f, 0.2f, 0.1f);
-        nomeTesto.horizontalOverflow = HorizontalWrapMode.Wrap;
-        nomeTesto.verticalOverflow = VerticalWrapMode.Truncate;
-        nomeTesto.raycastTarget = false;
-        nomeTesto.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        if (nomeTesto.font == null)
-        {
-            nomeTesto.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-        }
+        immagineRect.localScale = Vector3.one * ScalaArtwork;
     }
 
-    public void Aggiorna(bool piazzataAdesso, bool selezionataAdesso)
+    public void Aggiorna(bool piazzataAdesso, bool bloccataAdesso, bool selezionataAdesso)
     {
         piazzata = piazzataAdesso;
+        bloccata = bloccataAdesso;
+        selezionata = selezionataAdesso;
+
         if (immagine != null)
         {
-            immagine.color = piazzata ? new Color(0.45f, 0.45f, 0.45f, 0.8f) : Color.white;
+            if (bloccata)
+            {
+                immagine.material = OttieniMaterialeGrigio();
+                immagine.color = Color.white;
+            }
+            else
+            {
+                immagine.material = null;
+                immagine.color = piazzata ? new Color(0.45f, 0.45f, 0.45f, 0.8f) : Color.white;
+            }
         }
-        if (nomeTesto != null)
-        {
-            nomeTesto.color = piazzata ? new Color(0.5f, 0.5f, 0.5f, 0.8f) : new Color(0.3f, 0.2f, 0.1f);
-        }
-        transform.localScale = selezionataAdesso ? Vector3.one * 1.08f : Vector3.one;
+        AggiornaScalaVisiva();
+    }
+
+    // Scala "di posizione" (quanto e' vicina al centro del carosello, impostata da ZollaCarousel)
+    // ed enfasi da selezione si moltiplicano insieme, invece di sovrascriversi a vicenda.
+    public void ImpostaScalaPosizione(float scala)
+    {
+        scalaPosizione = scala;
+        AggiornaScalaVisiva();
+    }
+
+    private void AggiornaScalaVisiva()
+    {
+        transform.localScale = Vector3.one * scalaPosizione * (selezionata ? 1.08f : 1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (bloccata)
+        {
+            return;
+        }
         if (carosello != null)
         {
             carosello.Seleziona(Indice);
@@ -102,7 +123,7 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (piazzata || immagine == null)
+        if (bloccata || piazzata || immagine == null)
         {
             return;
         }

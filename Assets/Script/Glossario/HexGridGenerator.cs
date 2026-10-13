@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,20 @@ public class HexGridGenerator : MonoBehaviour
     void Start()
     {
         GeneraGriglia();
+
+        if (Application.isPlaying && carosello != null)
+        {
+            StartCoroutine(CaricaPiazzamentiRitardato());
+        }
+    }
+
+    // Aspetta un frame prima di ricaricare i piazzamenti salvati: cosi' siamo sicuri che anche
+    // ZollaCarousel.Start() (che inizializza Viewport/Contenuto del carosello) sia gia' stato
+    // eseguito, indipendentemente dall'ordine con cui Unity chiama gli Start() delle due scene.
+    private IEnumerator CaricaPiazzamentiRitardato()
+    {
+        yield return null;
+        carosello.CaricaPiazzamentiSalvati();
     }
 
 #if UNITY_EDITOR
@@ -74,6 +89,7 @@ public class HexGridGenerator : MonoBehaviour
         if (carosello != null)
         {
             carosello.ResettaPiazzamenti();
+            carosello.SvuotaRegistroSlot();
         }
 
         float width = hexSize * 2f;
@@ -122,7 +138,11 @@ public class HexGridGenerator : MonoBehaviour
                 }
 
                 ZollaSlot slot = istanza.AddComponent<ZollaSlot>();
-                slot.Init(carosello, dettagli);
+                slot.Init(carosello, dettagli, scalaVerticale, indice);
+                if (carosello != null)
+                {
+                    carosello.RegistraSlot(slot);
+                }
 
                 indice++;
             }

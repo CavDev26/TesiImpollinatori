@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a53b6aa30f341549b3c5cde8eb75447, type: 3}
   m_Name: giardino_rose
   m_EditorClassIdentifier: 
-  nome: 
-  immagine: {fileID: 0}
+  nome: Giardino di rose
+  immagine: {fileID: 21300000, guid: d48b3fd49934bf14386bea109f64c35f, type: 3}

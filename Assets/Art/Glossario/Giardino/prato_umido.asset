@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a53b6aa30f341549b3c5cde8eb75447, type: 3}
   m_Name: prato_umido
   m_EditorClassIdentifier: 
-  nome: 
-  immagine: {fileID: 0}
+  nome: Prato umido
+  immagine: {fileID: 21300000, guid: d766dbb2c6ff72d49b495fa183699824, type: 3}

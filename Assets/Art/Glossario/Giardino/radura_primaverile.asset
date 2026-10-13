@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a53b6aa30f341549b3c5cde8eb75447, type: 3}
   m_Name: radura_primaverile
   m_EditorClassIdentifier: 
-  nome: 
-  immagine: {fileID: 0}
+  nome: Radura primaverile
+  immagine: {fileID: 21300000, guid: 51ece1cd48ce28c41a7d113159d6e288, type: 3}
