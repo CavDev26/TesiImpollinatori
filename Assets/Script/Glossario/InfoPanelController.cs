@@ -12,6 +12,8 @@ public class InfoPanelController : MonoBehaviour
     public GameObject infoPanel;
     public Button openButton;
     public Button closeButton;
+    [Tooltip("Se assegnato, si chiude automaticamente quando si apre questo pannello (altrimenti resta visibile e cliccabile sotto).")]
+    public ZollaCarousel carosello;
 
     [Header("Animazione apertura/chiusura")]
     public float durata = 0.22f;
@@ -53,6 +55,11 @@ public class InfoPanelController : MonoBehaviour
         if (animazioneInCorso != null)
         {
             StopCoroutine(animazioneInCorso);
+        }
+
+        if (carosello != null)
+        {
+            carosello.Chiudi();
         }
 
         if (overlay != null)
