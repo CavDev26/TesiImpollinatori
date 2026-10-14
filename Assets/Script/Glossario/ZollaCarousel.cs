@@ -359,9 +359,6 @@ public class ZollaCarousel : MonoBehaviour
 
     private void CreaBottoneTestGiocato()
     {
-        CreaBottoneTest("TestHaGiocato", "TEST:\nHa giocato", -1, new Color(0.3f, 0.55f, 0.3f),
-            () => GiardinoSalvataggio.SegnaGiocato());
-
         CreaBottoneTest("TestBloccaTutto", "TEST:\nBlocca tutto", 1, new Color(0.55f, 0.3f, 0.3f),
             () =>
             {

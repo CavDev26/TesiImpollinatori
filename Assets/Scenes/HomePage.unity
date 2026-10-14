@@ -626,13 +626,13 @@ MonoBehaviour:
   gardenSceneName: NewGlossario
   minigamesSceneName: MainScreen
   zollette:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 45851c049b942db4986af27d8ef98a82, type: 2}
+  - {fileID: 11400000, guid: a7226e4768501604faef8aed12b2abc9, type: 2}
+  - {fileID: 11400000, guid: 9fdff28ed4f3b5942b6202b30cb1ce08, type: 2}
+  - {fileID: 11400000, guid: 723fde5e3d0de8f47adb21d9cab34920, type: 2}
+  - {fileID: 11400000, guid: 2c282078b6fa75744814ff42dc20601f, type: 2}
+  - {fileID: 11400000, guid: 96efc2030f683054db60226c60f071c0, type: 2}
+  - {fileID: 11400000, guid: ccee3c31b0f00474fb71a86c1d16784e, type: 2}
   testoContatore: {fileID: 1893976575}
 --- !u!114 &665041391
 MonoBehaviour:
