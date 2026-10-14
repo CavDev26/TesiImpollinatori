@@ -25,7 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7735f6c307a077744b404446d95a7ec0, type: 2}
   - {fileID: 11400000, guid: b000524f38ed01c4899614b4f886b871, type: 2}
   - {fileID: 11400000, guid: 589b34b1ff1dfae428ca93baeb715633, type: 2}
-  comeSbloccare: Devi fare almeno 10 punti!!!! nel gioco 1
+  comeSbloccare: Ottieni almeno 10 punti nel Gioco 1!
   condizioneSblocco:
     tipo: 1
     soglia: 10

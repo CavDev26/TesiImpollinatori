@@ -8,6 +8,7 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
     private ZollaCarousel carosello;
     private Image immagine;
     private RectTransform immagineRect;
+    private Image lucchetto;
     private GameObject fantasma;
     private bool piazzata;
     private bool bloccata;
@@ -41,7 +42,10 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
         return materialeGrigio;
     }
 
-    public void Init(ZollaCarousel c, int indice, Sprite sprite)
+    // Quanto e' grande il lucchetto, centrato sulla cella, come frazione del lato.
+    private const float DimensioneLucchetto = 0.4f;
+
+    public void Init(ZollaCarousel c, int indice, Sprite sprite, Sprite spriteLucchetto)
     {
         carosello = c;
         Indice = indice;
@@ -72,6 +76,23 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
         immagine.preserveAspect = true;
         immagine.raycastTarget = false;
         immagineRect.localScale = Vector3.one * ScalaArtwork;
+
+        // Icona lucchetto, centrata sopra tutto il resto: visibile solo quando la zolletta e'
+        // bloccata (vedi Aggiorna). raycastTarget off, cosi' non ruba il click alla ZonaClic.
+        GameObject lucchettoGo = new GameObject("Lucchetto", typeof(RectTransform), typeof(Image));
+        lucchettoGo.transform.SetParent(transform, false);
+        RectTransform lucchettoRect = lucchettoGo.GetComponent<RectTransform>();
+        float meta = DimensioneLucchetto * 0.5f;
+        lucchettoRect.anchorMin = new Vector2(0.5f - meta, 0.5f - meta);
+        lucchettoRect.anchorMax = new Vector2(0.5f + meta, 0.5f + meta);
+        lucchettoRect.offsetMin = Vector2.zero;
+        lucchettoRect.offsetMax = Vector2.zero;
+
+        lucchetto = lucchettoGo.GetComponent<Image>();
+        lucchetto.sprite = spriteLucchetto;
+        lucchetto.preserveAspect = true;
+        lucchetto.raycastTarget = false;
+        lucchetto.gameObject.SetActive(false);
     }
 
     public void Aggiorna(bool piazzataAdesso, bool bloccataAdesso, bool selezionataAdesso)
@@ -92,6 +113,10 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
                 immagine.material = null;
                 immagine.color = piazzata ? new Color(0.45f, 0.45f, 0.45f, 0.8f) : Color.white;
             }
+        }
+        if (lucchetto != null)
+        {
+            lucchetto.gameObject.SetActive(bloccata);
         }
         AggiornaScalaVisiva();
     }

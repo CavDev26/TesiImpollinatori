@@ -14,6 +14,8 @@ public class ZollaCarousel : MonoBehaviour
     public TMP_Text nomeCentrale;
     [Tooltip("Per mostrare i dettagli (incluso come sbloccarla) quando si clicca una zolletta bloccata.")]
     public DetailsPanelController dettagli;
+    [Tooltip("Icona mostrata sopra le zollette del carosello ancora bloccate.")]
+    public Sprite spriteLucchetto;
 
     [Header("Zollette disponibili")]
     [Tooltip("Una scheda (ScriptableObject) per ogni zolletta: Assets -> Create -> Giardino -> Zolletta.")]
@@ -245,7 +247,7 @@ public class ZollaCarousel : MonoBehaviour
             rt.sizeDelta = new Vector2(larghezzaItem * 0.9f, altezza * 0.9f);
 
             ZollaItem item = go.AddComponent<ZollaItem>();
-            item.Init(this, i, dato != null ? dato.immagine : null);
+            item.Init(this, i, dato != null ? dato.immagine : null, spriteLucchetto);
             items.Add(item);
         }
 

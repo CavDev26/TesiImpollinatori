@@ -25,7 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5035c75a06d5ac04d9c5f17032b7f43c, type: 2}
   - {fileID: 11400000, guid: cca94e86edf90b24f9dd5927fb8a7278, type: 2}
   - {fileID: 11400000, guid: 6bebcf28356ff9c42a9b14f5adc30fec, type: 2}
-  comeSbloccare: 
+  comeSbloccare: Sblocca tutte le altre zollette!
   condizioneSblocco:
     tipo: 9
     soglia: 0

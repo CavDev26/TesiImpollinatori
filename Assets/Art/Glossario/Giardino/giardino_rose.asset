@@ -26,7 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 079f4be02586d5a4b9bd31c55826882c, type: 2}
   - {fileID: 11400000, guid: b4d1f6f0518ed3a46bac3a2625fd7486, type: 2}
   - {fileID: 11400000, guid: 77530a980edc38d4d909fff8f01e08cf, type: 2}
-  comeSbloccare: 4 scelte corrette nel gioco 3
+  comeSbloccare: Esegui 4 scelte corrette nel Gioco 3!
   condizioneSblocco:
     tipo: 6
     soglia: 4
