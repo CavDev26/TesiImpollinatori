@@ -23,11 +23,57 @@ public static class GiardinoSalvataggio
         PlayerPrefs.Save();
     }
 
-    // Per ora lo sblocco e' tutto o niente (basta aver giocato una volta). In futuro qui si
-    // controllera' l'elenco specifico delle zollette sbloccate in base ai punteggi dei minigiochi.
-    public static bool EZollettaSbloccata(string idZolletta)
+    // HaGiocato resta un override "sblocca tutto" per i bottoni di test: se attivo, salta la
+    // condizione specifica della zolletta. Altrimenti si valuta la sua CondizioneSblocco
+    // (vedi CondizioneSblocco.cs) contro i progressi reali salvati nei minigiochi.
+    //
+    // "tutteLeZollette" e' opzionale e serve solo per il tipo TutteLeAltreSbloccate (l'unico che
+    // deve guardare lo stato delle altre zollette, non solo i progressi dei minigiochi): se non
+    // viene passato, quel tipo di condizione non puo' essere valutata e risulta sempre bloccata.
+    public static bool EZollettaSbloccata(ZollettaData zolletta, ZollettaData[] tutteLeZollette = null)
     {
-        return HaGiocato;
+        if (zolletta == null)
+        {
+            return false;
+        }
+        if (HaGiocato)
+        {
+            return true;
+        }
+        if (zolletta.condizioneSblocco == null)
+        {
+            return false;
+        }
+
+        if (zolletta.condizioneSblocco.tipo == TipoCondizioneSblocco.TutteLeAltreSbloccate)
+        {
+            return TutteLeAltreSonoSbloccate(zolletta, tutteLeZollette);
+        }
+        return zolletta.condizioneSblocco.EValida();
+    }
+
+    private static bool TutteLeAltreSonoSbloccate(ZollettaData zolletta, ZollettaData[] tutteLeZollette)
+    {
+        if (tutteLeZollette == null)
+        {
+            return false;
+        }
+
+        foreach (ZollettaData altra in tutteLeZollette)
+        {
+            if (altra == null || altra == zolletta)
+            {
+                continue;
+            }
+            // Non passiamo "tutteLeZollette" qui: questa condizione e' pensata per una sola
+            // zolletta "finale", non deve dipendere a sua volta da un'altra con lo stesso tipo
+            // (eviterebbe un ciclo infinito).
+            if (!EZollettaSbloccata(altra))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     [Serializable]

@@ -113,6 +113,10 @@ public class ZollaItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler,
     {
         if (bloccata)
         {
+            if (carosello != null)
+            {
+                carosello.MostraDettagliBloccata(Indice);
+            }
             return;
         }
         if (carosello != null)

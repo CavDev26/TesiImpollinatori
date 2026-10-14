@@ -12,6 +12,8 @@ public class ZollaCarousel : MonoBehaviour
     public Button pulsantePiu;
     [Tooltip("Testo che mostra il nome della sola zolletta al centro del carosello.")]
     public TMP_Text nomeCentrale;
+    [Tooltip("Per mostrare i dettagli (incluso come sbloccarla) quando si clicca una zolletta bloccata.")]
+    public DetailsPanelController dettagli;
 
     [Header("Zollette disponibili")]
     [Tooltip("Una scheda (ScriptableObject) per ogni zolletta: Assets -> Create -> Giardino -> Zolletta.")]
@@ -109,6 +111,18 @@ public class ZollaCarousel : MonoBehaviour
         pannello.SetActive(false);
     }
 
+    // Click su una zolletta ancora bloccata nel carosello: mostra comunque i suoi dettagli (incluso
+    // il testo "come sbloccarla"), ma senza possibilita' di selezionarla/piazzarla ne' di rimuoverla.
+    public void MostraDettagliBloccata(int indice)
+    {
+        if (dettagli == null || zollette == null || indice < 0 || indice >= zollette.Length)
+        {
+            return;
+        }
+        Chiudi();
+        dettagli.ApriDettagliPerZolletta(zollette[indice]);
+    }
+
     public void Seleziona(int indice)
     {
         if (piazzate == null || indice < 0 || indice >= piazzate.Length || piazzate[indice])
@@ -168,7 +182,7 @@ public class ZollaCarousel : MonoBehaviour
     private bool EZollettaSbloccata(int indice)
     {
         return zollette != null && indice >= 0 && indice < zollette.Length
-            && zollette[indice] != null && GiardinoSalvataggio.EZollettaSbloccata(zollette[indice].name);
+            && GiardinoSalvataggio.EZollettaSbloccata(zollette[indice], zollette);
     }
 
     public bool EPiazzata(int indice)
@@ -350,6 +364,7 @@ public class ZollaCarousel : MonoBehaviour
             () =>
             {
                 GiardinoSalvataggio.ResettaGiocato();
+                ProgressiMinigiochi.ResettaTutto();
                 RimuoviTuttiIPiazzamenti();
             });
     }

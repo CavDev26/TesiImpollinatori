@@ -87,6 +87,14 @@ public class Game3Controller : MonoBehaviour
             if (gruppoFiore == gruppoImp) score++;
         }
         Debug.Log(score);
+
+        if (score > PlayerPrefs.GetInt("RecordGame3Conteggio", 0))
+        {
+            PlayerPrefs.SetInt("RecordGame3Conteggio", score);
+        }
+        PlayerPrefs.SetInt("Giocato_Gioco3", 1);
+        PlayerPrefs.Save();
+
         if (score == 4)
         {
             //Tutto corretto, mostro il tempo

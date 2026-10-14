@@ -26,3 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a920cfcaf53709f4f9f9e55439266fae, type: 2}
   - {fileID: 11400000, guid: 977ccf04cc3895b41b9e11ba606d2715, type: 2}
   - {fileID: 11400000, guid: 7f8144f6429f1614eabe9f33678b8345, type: 2}
+  comeSbloccare: 
+  condizioneSblocco:
+    tipo: 5
+    soglia: 0

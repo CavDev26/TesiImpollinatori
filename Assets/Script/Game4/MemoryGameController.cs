@@ -150,7 +150,7 @@ public class MemoryGameController : MonoBehaviour
 
         if (firstCard.cardID == secondCard.cardID)
         {
-            // COPPIA CORRETTA: rimangono a faccia in su e non sono più cliccabili
+            // COPPIA CORRETTA: rimangono a faccia in su e non sono piï¿½ cliccabili
             firstCard.SetMatched();
             secondCard.SetMatched();
 
@@ -187,10 +187,27 @@ public class MemoryGameController : MonoBehaviour
         cardGrid.SetActive(false);
         datiPanel.SetActive(false);
         // Update the win panel with the final stats
-        timeWon.text = Mathf.Ceil(initialTime - timeLeft).ToString() + " s";
+        float tempoImpiegato = initialTime - timeLeft;
+        timeWon.text = Mathf.Ceil(tempoImpiegato).ToString() + " s";
         movesWon.text = moves.ToString();
         winPanel.SetActive(true);
         buttonsPanel.SetActive(true);
+
+        // Record: meno e' meglio, sia per il tempo che per le mosse. 0 = nessun record ancora.
+        float recordTempo = PlayerPrefs.GetFloat("RecordGame4Tempo", 0f);
+        if (recordTempo == 0f || tempoImpiegato < recordTempo)
+        {
+            PlayerPrefs.SetFloat("RecordGame4Tempo", tempoImpiegato);
+        }
+
+        int recordMosse = PlayerPrefs.GetInt("RecordGame4Mosse", 0);
+        if (recordMosse == 0 || moves < recordMosse)
+        {
+            PlayerPrefs.SetInt("RecordGame4Mosse", moves);
+        }
+
+        PlayerPrefs.SetInt("Giocato_Gioco4", 1);
+        PlayerPrefs.Save();
     }
 
     private void LoseGame()
@@ -201,5 +218,8 @@ public class MemoryGameController : MonoBehaviour
         datiPanel.SetActive(false);
         losePanel.SetActive(true);
         buttonsPanel.SetActive(true);
+
+        PlayerPrefs.SetInt("Giocato_Gioco4", 1);
+        PlayerPrefs.Save();
     }
 }

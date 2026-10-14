@@ -75,5 +75,8 @@ public class TimerScript : MonoBehaviour
         gameOver.SetActive(true);
         pointsCanvas.SetActive(false);
         timerCanvas.SetActive(false);
+
+        PlayerPrefs.SetInt("Giocato_Gioco1", 1);
+        PlayerPrefs.Save();
     }
 }

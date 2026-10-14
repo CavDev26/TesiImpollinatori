@@ -29,6 +29,8 @@ public class DetailsPanelController : MonoBehaviour
     public TMP_Text[] nomiImpollinatori;
     public Image[] iconePiante;
     public TMP_Text[] nomiPiante;
+    [Tooltip("Mostra il testo ComeSbloccare della zolletta (pannello More).")]
+    public TMP_Text comeSbloccareTesto;
 
     [Header("Animazione apertura/chiusura")]
     public float durata = 0.22f;
@@ -158,6 +160,10 @@ public class DetailsPanelController : MonoBehaviour
         {
             descrizioneTesto.text = dato != null ? dato.descrizione : string.Empty;
         }
+        if (comeSbloccareTesto != null)
+        {
+            comeSbloccareTesto.text = dato != null ? dato.comeSbloccare : string.Empty;
+        }
 
         PopolaGruppo(iconeImpollinatori, nomiImpollinatori, dato != null ? dato.impollinatori : null);
         PopolaGruppo(iconePiante, nomiPiante, dato != null ? dato.piante : null);
@@ -190,12 +196,19 @@ public class DetailsPanelController : MonoBehaviour
 
     public void ApriDettagli()
     {
-        Apri(null);
+        Apri(null, null);
     }
 
     public void ApriDettagliPerSlot(ZollaSlot slot)
     {
-        Apri(slot);
+        Apri(slot, slot != null ? slot.Dato : null);
+    }
+
+    // Apre i dettagli di una zolletta non ancora piazzata (es. click su una zolletta bloccata nel
+    // carosello, per mostrare come sbloccarla). Nessuno slot associato: il bottone Rimuovi si nasconde.
+    public void ApriDettagliPerZolletta(ZollettaData dato)
+    {
+        Apri(null, dato);
     }
 
     public void RimuoviZolla()
@@ -208,10 +221,14 @@ public class DetailsPanelController : MonoBehaviour
         ChiudiDettagli();
     }
 
-    private void Apri(ZollaSlot slot)
+    private void Apri(ZollaSlot slot, ZollettaData dato)
     {
         slotAperto = slot;
-        MostraDatiZolletta(slot != null ? slot.Dato : null);
+        MostraDatiZolletta(dato);
+        if (rimuoviButton != null)
+        {
+            rimuoviButton.gameObject.SetActive(slot != null);
+        }
 
         if (animazioneInCorso != null)
         {

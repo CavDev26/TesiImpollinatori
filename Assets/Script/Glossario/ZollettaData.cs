@@ -11,4 +11,9 @@ public class ZollettaData : ScriptableObject
     [Header("Piante e impollinatori caratteristici (pannello More)")]
     public PiantaData[] piante;
     public ImpollinatoreData[] impollinatori;
+
+    [Header("Sblocco")]
+    [Tooltip("Testo mostrato all'utente per spiegare come sbloccare questa zolletta.")]
+    public string comeSbloccare;
+    public CondizioneSblocco condizioneSblocco = new CondizioneSblocco();
 }

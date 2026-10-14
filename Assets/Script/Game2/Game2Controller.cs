@@ -159,6 +159,14 @@ public class Game2Controller : MonoBehaviour
         RecapCanvas.SetActive(false);
         GameOverCanvas.SetActive(true);
         score.text = scelte.ToString() + "/5 scelte corrette";
+
+        if (scelte > PlayerPrefs.GetInt("RecordGame2", 0))
+        {
+            PlayerPrefs.SetInt("RecordGame2", scelte);
+        }
+        PlayerPrefs.SetInt("Giocato_Gioco2", 1);
+        PlayerPrefs.Save();
+
         int[] fiori;
         fioriPerImpoll.TryGetValue(impollinatore, out fiori);
         for(int i = 0; i< fiori.Length; i++)

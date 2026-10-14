@@ -26,3 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f3e373998bbde94b9b87bf8a52665c2, type: 2}
   - {fileID: 11400000, guid: 990d14dd362b166449d8a538618d494e, type: 2}
   - {fileID: 11400000, guid: 231b3060fa1d62d41959a33729f09cc5, type: 2}
+  comeSbloccare: memory in meno di 20 secodni
+  condizioneSblocco:
+    tipo: 7
+    soglia: 20

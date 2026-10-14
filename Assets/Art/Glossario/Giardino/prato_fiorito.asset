@@ -25,3 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 799b78c46c122bc47809539f827a091e, type: 2}
   - {fileID: 11400000, guid: c8aeee3f6a9c8dc479562b8387cc3e56, type: 2}
   - {fileID: 11400000, guid: 9b24506db1bcfa046a7be862f81ae240, type: 2}
+  comeSbloccare: Meno di 20 mosse nel memory 4
+  condizioneSblocco:
+    tipo: 8
+    soglia: 20
