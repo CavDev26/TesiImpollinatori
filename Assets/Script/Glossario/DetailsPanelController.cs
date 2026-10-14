@@ -21,6 +21,7 @@ public class DetailsPanelController : MonoBehaviour
     public Button rimuoviButton;
     public TMP_Text nomeTesto;
     public Image artImmagine;
+    public TMP_Text descrizioneTesto;
 
     [Header("Piante e impollinatori (pannello More)")]
     [Tooltip("Uno slot icona per ogni impollinatore/pianta, nello stesso ordine degli array in ZollettaData.")]
@@ -152,6 +153,10 @@ public class DetailsPanelController : MonoBehaviour
         {
             artImmagine.sprite = dato != null ? dato.immagine : null;
             artImmagine.preserveAspect = true;
+        }
+        if (descrizioneTesto != null)
+        {
+            descrizioneTesto.text = dato != null ? dato.descrizione : string.Empty;
         }
 
         PopolaGruppo(iconeImpollinatori, nomiImpollinatori, dato != null ? dato.impollinatori : null);

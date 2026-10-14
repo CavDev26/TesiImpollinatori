@@ -6,6 +6,7 @@ public class ZollettaData : ScriptableObject
 {
     public string nome;
     public Sprite immagine;
+    public string descrizione;
 
     [Header("Piante e impollinatori caratteristici (pannello More)")]
     public PiantaData[] piante;

@@ -14,3 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Prato montano
   immagine: {fileID: 21300000, guid: 273ce392c3828f24d96929b9fdf424c3, type: 3}
+  descrizione: Tra le rocce e l'aria fresca di montagna crescono fiori blu, viola,
+    rosa e bianchi. Farfalle e bombi visitano queste piante, adattate alla vita in
+    quota. Anche negli ambienti montani, gli impollinatori aiutano a mantenere la
+    ricchezza della natura.
+  piante:
+  - {fileID: 11400000, guid: ef41f8d9ae5894746b19b18d30adc55a, type: 2}
+  - {fileID: 11400000, guid: d2280cadda6e28543b0d8445dbabd763, type: 2}
+  - {fileID: 11400000, guid: 996590d044db1a44f91745ee0423606b, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 6f3e373998bbde94b9b87bf8a52665c2, type: 2}
+  - {fileID: 11400000, guid: 990d14dd362b166449d8a538618d494e, type: 2}
+  - {fileID: 11400000, guid: 231b3060fa1d62d41959a33729f09cc5, type: 2}

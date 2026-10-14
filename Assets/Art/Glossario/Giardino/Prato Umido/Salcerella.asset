@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1ec90cbf4efcb447a4f95041db0cf53, type: 3}
-  m_Name: NuovoImpollinatore 1
+  m_Script: {fileID: 11500000, guid: 8af2eb256e5caf14aa06a34c8d303df8, type: 3}
+  m_Name: Salcerella
   m_EditorClassIdentifier: 
-  nome: 
-  icona: {fileID: 0}
+  nome: Salcerella
+  icona: {fileID: 21300000, guid: f3d0328899e0546499d1bebfcf5e90bf, type: 3}

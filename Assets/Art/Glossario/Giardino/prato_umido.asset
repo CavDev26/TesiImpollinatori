@@ -14,3 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Prato umido
   immagine: {fileID: 21300000, guid: d766dbb2c6ff72d49b495fa183699824, type: 3}
+  descrizione: Qui l'acqua mantiene il terreno fresco e favorisce la crescita di
+    piante rigogliose. Fiori rosa, fucsia e bianchi attirano numerosi sirfidi, piccole
+    mosche che spesso assomigliano alle api. Visitando i fiori, anche loro contribuiscono
+    all'impollinazione!
+  piante:
+  - {fileID: 11400000, guid: 8f3da06d76b14e44cbb5cf86fec0c04c, type: 2}
+  - {fileID: 11400000, guid: 6a69dd3260389d14ea861d7af29f77ea, type: 2}
+  - {fileID: 11400000, guid: db7b2c93478ef324c8e4091a89766375, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: a920cfcaf53709f4f9f9e55439266fae, type: 2}
+  - {fileID: 11400000, guid: 977ccf04cc3895b41b9e11ba606d2715, type: 2}
+  - {fileID: 11400000, guid: 7f8144f6429f1614eabe9f33678b8345, type: 2}

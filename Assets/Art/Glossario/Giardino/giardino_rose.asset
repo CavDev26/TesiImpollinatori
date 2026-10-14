@@ -14,3 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nome: Giardino di rose
   immagine: {fileID: 21300000, guid: d48b3fd49934bf14386bea109f64c35f, type: 3}
+  descrizione: Rose rosa, margherite bianche e fiori viola rendono questo giardino
+    vivace e colorato. Coleotteri e piccole api si posano sui fiori per raccogliere
+    polline e nettare. Anche gli insetti meno conosciuti possono svolgere un ruolo
+    importante nell'impollinazione!
+  piante:
+  - {fileID: 11400000, guid: 88ade09ab9b3d7e4ea2e116af3257694, type: 2}
+  - {fileID: 11400000, guid: c33bf34b5436007498846c6f2b856877, type: 2}
+  - {fileID: 11400000, guid: 217f3e0b4413be8418b99f0ee148e608, type: 2}
+  impollinatori:
+  - {fileID: 11400000, guid: 079f4be02586d5a4b9bd31c55826882c, type: 2}
+  - {fileID: 11400000, guid: b4d1f6f0518ed3a46bac3a2625fd7486, type: 2}
+  - {fileID: 11400000, guid: 77530a980edc38d4d909fff8f01e08cf, type: 2}
