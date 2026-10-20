@@ -354,12 +354,12 @@ public class ZollaCarousel : MonoBehaviour
         GiardinoSalvataggio.SalvaPiazzamenti(piazzamenti);
     }
 
-    // --- Bottoni temporanei di test: sbloccano/bloccano tutte le zollette, uno a sinistra e uno a
-    // destra del "+", stessa misura e stile. ---
+    // --- Bottone temporaneo di test: blocca tutte le zollette (resetta sblocchi + progressi
+    // minigiochi + piazzamenti), posizionato a destra del "+". ---
 
     private void CreaBottoneTestGiocato()
     {
-        CreaBottoneTest("TestBloccaTutto", "TEST:\nBlocca tutto", 1, new Color(0.55f, 0.3f, 0.3f),
+        CreaBottoneTest("TestBloccaTutto", "TEST:\nBlocca tutto", new Color(0.55f, 0.3f, 0.3f),
             () =>
             {
                 GiardinoSalvataggio.ResettaGiocato();
@@ -383,7 +383,7 @@ public class ZollaCarousel : MonoBehaviour
         SalvaStatoPiazzamenti();
     }
 
-    private void CreaBottoneTest(string nome, string testoBottone, int direzione, Color coloreSfondo, System.Action azione)
+    private void CreaBottoneTest(string nome, string testoBottone, Color coloreSfondo, System.Action azione)
     {
         if (pulsantePiu == null)
         {
@@ -405,7 +405,7 @@ public class ZollaCarousel : MonoBehaviour
         rt.pivot = rifRect.pivot;
         rt.sizeDelta = rifRect.sizeDelta * 0.6f;
         rt.anchoredPosition = rifRect.anchoredPosition
-            + new Vector2(direzione * (rifRect.sizeDelta.x * 0.5f + rt.sizeDelta.x * 0.5f + 20f), 0f);
+            + new Vector2(rifRect.sizeDelta.x * 0.5f + rt.sizeDelta.x * 0.5f + 20f, 0f);
 
         Image sfondo = go.GetComponent<Image>();
         sfondo.color = coloreSfondo;

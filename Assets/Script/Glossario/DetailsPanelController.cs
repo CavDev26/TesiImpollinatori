@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -258,7 +257,8 @@ public class DetailsPanelController : MonoBehaviour
             detailsPanel.SetActive(true);
         }
 
-        animazioneInCorso = StartCoroutine(Anima(0f, 1f, null));
+        animazioneInCorso = StartCoroutine(TweenUtil.FadeScala(durata, scalaIniziale, 0f, 1f, overlayGroup, gruppoCorrente,
+            () => animazioneInCorso = null));
     }
 
     public void ChiudiDettagli()
@@ -268,7 +268,8 @@ public class DetailsPanelController : MonoBehaviour
             StopCoroutine(animazioneInCorso);
         }
 
-        animazioneInCorso = StartCoroutine(Anima(1f, 0f, ChiudiImmediato));
+        animazioneInCorso = StartCoroutine(TweenUtil.FadeScala(durata, scalaIniziale, 1f, 0f, overlayGroup, gruppoCorrente,
+            () => { animazioneInCorso = null; ChiudiImmediato(); }));
     }
 
     private void ChiudiImmediato()
@@ -369,32 +370,4 @@ public class DetailsPanelController : MonoBehaviour
         slideInCorso = null;
     }
 
-    private IEnumerator Anima(float da, float a, Action alTermine)
-    {
-        float tempo = 0f;
-        while (tempo < durata)
-        {
-            tempo += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(tempo / durata));
-            ImpostaValore(Mathf.Lerp(da, a, t));
-            yield return null;
-        }
-
-        ImpostaValore(a);
-        animazioneInCorso = null;
-        alTermine?.Invoke();
-    }
-
-    private void ImpostaValore(float valore)
-    {
-        if (overlayGroup != null)
-        {
-            overlayGroup.alpha = valore;
-        }
-        if (gruppoCorrente != null)
-        {
-            gruppoCorrente.alpha = valore;
-            gruppoCorrente.transform.localScale = Vector3.one * Mathf.Lerp(scalaIniziale, 1f, valore);
-        }
-    }
 }

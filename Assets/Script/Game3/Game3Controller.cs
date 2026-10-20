@@ -45,7 +45,7 @@ public class Game3Controller : MonoBehaviour
     {
         isGameOver = true;
         timePassed = 0;
-        record = (float)System.Math.Round(PlayerPrefs.GetFloat("RecordGame3"), 2);
+        record = (float)System.Math.Round(PlayerPrefs.GetFloat(ProgressiMinigiochi.Chiavi.TempoGioco3), 2);
         int[] indiciFiori = FioriInBox();
         impPerFiore = new ImpollinatoriPerFiore(indiciFiori);
         SpawnImpollinatori();
@@ -88,12 +88,8 @@ public class Game3Controller : MonoBehaviour
         }
         Debug.Log(score);
 
-        if (score > PlayerPrefs.GetInt("RecordGame3Conteggio", 0))
-        {
-            PlayerPrefs.SetInt("RecordGame3Conteggio", score);
-        }
-        PlayerPrefs.SetInt("Giocato_Gioco3", 1);
-        PlayerPrefs.Save();
+        ProgressiMinigiochi.AggiornaRecordSeMigliore(ProgressiMinigiochi.Chiavi.RecordGioco3Conteggio, score, piuAltoVince: true);
+        ProgressiMinigiochi.SegnaGiocato(3);
 
         if (score == 4)
         {
@@ -102,7 +98,7 @@ public class Game3Controller : MonoBehaviour
             TitleText.text = "COMPLIMENTI";
             if (timePassed < record || record == 0)
             {
-                PlayerPrefs.SetFloat("RecordGame3", timePassed);
+                PlayerPrefs.SetFloat(ProgressiMinigiochi.Chiavi.TempoGioco3, timePassed);
                 RecordText.color = Color.yellow;
                 NewRecordText.SetActive(true);
             }
@@ -112,7 +108,9 @@ public class Game3Controller : MonoBehaviour
             TitleText.text = "PECCATO";
         }
         SubTitleText.text = score + "/4 CORRETTI";
-        RecordText.text = System.Math.Round(PlayerPrefs.GetFloat("RecordGame3"), 2).ToString();
+        RecordText.text = System.Math.Round(PlayerPrefs.GetFloat(ProgressiMinigiochi.Chiavi.TempoGioco3), 2).ToString();
+
+        PlayerPrefs.Save();
 
 
         Flowers.SetActive(false);

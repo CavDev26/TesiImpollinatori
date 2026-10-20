@@ -193,20 +193,10 @@ public class MemoryGameController : MonoBehaviour
         winPanel.SetActive(true);
         buttonsPanel.SetActive(true);
 
-        // Record: meno e' meglio, sia per il tempo che per le mosse. 0 = nessun record ancora.
-        float recordTempo = PlayerPrefs.GetFloat("RecordGame4Tempo", 0f);
-        if (recordTempo == 0f || tempoImpiegato < recordTempo)
-        {
-            PlayerPrefs.SetFloat("RecordGame4Tempo", tempoImpiegato);
-        }
-
-        int recordMosse = PlayerPrefs.GetInt("RecordGame4Mosse", 0);
-        if (recordMosse == 0 || moves < recordMosse)
-        {
-            PlayerPrefs.SetInt("RecordGame4Mosse", moves);
-        }
-
-        PlayerPrefs.SetInt("Giocato_Gioco4", 1);
+        // Record: meno e' meglio, sia per il tempo che per le mosse.
+        ProgressiMinigiochi.AggiornaRecordSeMigliore(ProgressiMinigiochi.Chiavi.TempoGioco4, tempoImpiegato, piuAltoVince: false);
+        ProgressiMinigiochi.AggiornaRecordSeMigliore(ProgressiMinigiochi.Chiavi.MosseGioco4, moves, piuAltoVince: false);
+        ProgressiMinigiochi.SegnaGiocato(4);
         PlayerPrefs.Save();
     }
 
@@ -219,7 +209,7 @@ public class MemoryGameController : MonoBehaviour
         losePanel.SetActive(true);
         buttonsPanel.SetActive(true);
 
-        PlayerPrefs.SetInt("Giocato_Gioco4", 1);
+        ProgressiMinigiochi.SegnaGiocato(4);
         PlayerPrefs.Save();
     }
 }

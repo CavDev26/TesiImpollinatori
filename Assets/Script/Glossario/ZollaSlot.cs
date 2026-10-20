@@ -28,7 +28,7 @@ public class ZollaSlot : MonoBehaviour, IPointerClickHandler
     // Schiacciamento verticale applicato dalla griglia (HexGridGenerator.scalaVerticale), passato
     // esplicitamente: va compensato solo questo, non l'intera scala ereditata (che include anche
     // il fattore automatico del Canvas Scaler, uguale su X e Y e quindi da non toccare).
-    private float scalaVerticaleGriglia = 0.9f;
+    private float scalaVerticaleGriglia;
 
     public void Init(ZollaCarousel c, DetailsPanelController d, float scalaVerticaleGriglia = 1f, int indiceGriglia = -1)
     {

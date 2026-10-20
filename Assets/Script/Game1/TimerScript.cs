@@ -55,12 +55,12 @@ public class TimerScript : MonoBehaviour
             if(ChoseFlower.FlowerChosen == 0)
             {
                 Game1Controller.record0 = Game1Controller.score;
-                PlayerPrefs.SetInt("RecordGame1.0", Game1Controller.record0);
+                PlayerPrefs.SetInt(ProgressiMinigiochi.Chiavi.RecordGioco1A, Game1Controller.record0);
                 RecordText.text = Game1Controller.record0.ToString();
             } else
             {
                 Game1Controller.record1 = Game1Controller.score;
-                PlayerPrefs.SetInt("RecordGame1.1", Game1Controller.record1);
+                PlayerPrefs.SetInt(ProgressiMinigiochi.Chiavi.RecordGioco1B, Game1Controller.record1);
                 RecordText.text = Game1Controller.record1.ToString();
             }
             RecordText.color = Color.yellow;
@@ -76,7 +76,7 @@ public class TimerScript : MonoBehaviour
         pointsCanvas.SetActive(false);
         timerCanvas.SetActive(false);
 
-        PlayerPrefs.SetInt("Giocato_Gioco1", 1);
+        ProgressiMinigiochi.SegnaGiocato(1);
         PlayerPrefs.Save();
     }
 }

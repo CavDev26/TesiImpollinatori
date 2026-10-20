@@ -160,11 +160,8 @@ public class Game2Controller : MonoBehaviour
         GameOverCanvas.SetActive(true);
         score.text = scelte.ToString() + "/5 scelte corrette";
 
-        if (scelte > PlayerPrefs.GetInt("RecordGame2", 0))
-        {
-            PlayerPrefs.SetInt("RecordGame2", scelte);
-        }
-        PlayerPrefs.SetInt("Giocato_Gioco2", 1);
+        ProgressiMinigiochi.AggiornaRecordSeMigliore(ProgressiMinigiochi.Chiavi.RecordGioco2, scelte, piuAltoVince: true);
+        ProgressiMinigiochi.SegnaGiocato(2);
         PlayerPrefs.Save();
 
         int[] fiori;

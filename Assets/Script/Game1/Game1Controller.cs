@@ -32,8 +32,8 @@ public class Game1Controller : MonoBehaviour
         spawnRateR = 1.3f;
 
         score = 0;
-        record0 = PlayerPrefs.GetInt("RecordGame1.0");
-        record1 = PlayerPrefs.GetInt("RecordGame1.1");
+        record0 = PlayerPrefs.GetInt(ProgressiMinigiochi.Chiavi.RecordGioco1A);
+        record1 = PlayerPrefs.GetInt(ProgressiMinigiochi.Chiavi.RecordGioco1B);
     }
 
     // Update is called once per frame

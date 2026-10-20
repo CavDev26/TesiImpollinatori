@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Apertura/chiusura del pannello Info, stesso schema (overlay scuro + fade/scala) gia' usato per
-// i dettagli delle zollette in DetailsPanelController.
+// Apertura/chiusura del pannello Info: overlay scuro + fade/scala condivisi con DetailsPanelController
+// tramite TweenUtil.
 public class InfoPanelController : MonoBehaviour
 {
     [Header("Riferimenti principali")]
@@ -71,7 +69,8 @@ public class InfoPanelController : MonoBehaviour
             infoPanel.SetActive(true);
         }
 
-        animazioneInCorso = StartCoroutine(Anima(0f, 1f, null));
+        animazioneInCorso = StartCoroutine(TweenUtil.FadeScala(durata, scalaIniziale, 0f, 1f, overlayGroup, panelGroup,
+            () => animazioneInCorso = null));
     }
 
     public void Chiudi()
@@ -81,7 +80,8 @@ public class InfoPanelController : MonoBehaviour
             StopCoroutine(animazioneInCorso);
         }
 
-        animazioneInCorso = StartCoroutine(Anima(1f, 0f, ChiudiImmediato));
+        animazioneInCorso = StartCoroutine(TweenUtil.FadeScala(durata, scalaIniziale, 1f, 0f, overlayGroup, panelGroup,
+            () => { animazioneInCorso = null; ChiudiImmediato(); }));
     }
 
     private void ChiudiImmediato()
@@ -93,35 +93,6 @@ public class InfoPanelController : MonoBehaviour
         if (infoPanel != null)
         {
             infoPanel.SetActive(false);
-        }
-    }
-
-    private IEnumerator Anima(float da, float a, Action alTermine)
-    {
-        float tempo = 0f;
-        while (tempo < durata)
-        {
-            tempo += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(tempo / durata));
-            ImpostaValore(Mathf.Lerp(da, a, t));
-            yield return null;
-        }
-
-        ImpostaValore(a);
-        animazioneInCorso = null;
-        alTermine?.Invoke();
-    }
-
-    private void ImpostaValore(float valore)
-    {
-        if (overlayGroup != null)
-        {
-            overlayGroup.alpha = valore;
-        }
-        if (panelGroup != null)
-        {
-            panelGroup.alpha = valore;
-            panelGroup.transform.localScale = Vector3.one * Mathf.Lerp(scalaIniziale, 1f, valore);
         }
     }
 }
