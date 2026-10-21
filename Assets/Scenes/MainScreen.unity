@@ -447,7 +447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &201395559
 RectTransform:
   m_ObjectHideFlags: 0
@@ -466,7 +466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -621}
+  m_AnchoredPosition: {x: 23, y: -578}
   m_SizeDelta: {x: 600, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!82 &201395560
@@ -2131,7 +2131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &879854438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5841,6 +5841,9 @@ MonoBehaviour:
   homeSceneName: MainScreen
   gardenSceneName: NewGlossario
   minigamesSceneName: MainScreen
+  indicatoreHome: {fileID: 0}
+  indicatoreGarden: {fileID: 0}
+  indicatoreMinigames: {fileID: 0}
 --- !u!114 &7364996676393826402 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1299486704322928958, guid: faa8e5da7f808614686a7aff95ad99a8, type: 3}
